@@ -18,6 +18,8 @@ const chatRoutes = require("./routes/chatRoutes");
 const groupRoutes = require("./routes/groupRoutes");
 const webhookRoutes = require("./routes/webhookRoutes");
 const commentRoutes = require("./routes/commentRoutes.js");
+const markerRoutes = require("./routes/markerRoutes");
+
 
 const app = express();
 const server = http.createServer(app);
@@ -71,6 +73,8 @@ app.use("/api/registrations", registrationRoutes);
 app.use("/api/comments", commentRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/groups", groupRoutes);
+app.use("/api/markers", markerRoutes);
+
 
 // Initialize Socket.io handlers for real-time chat
 initializeSocketHandlers(io);

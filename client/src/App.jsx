@@ -17,6 +17,7 @@ import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
 import Profile from "./pages/Profile";
 import Donations from "./pages/Donations"; // ✅ import Donations page
+import MapWithList from "./pages/MapWithList";
 
 // Temporary placeholder component for missing pages
 const ComingSoon = ({ pageName }) => (
@@ -109,6 +110,8 @@ function App() {
           />
           <Route path="/impact" element={<ComingSoon pageName="Impact" />} />
           <Route path="/about" element={<ComingSoon pageName="About" />} />
+          <Route path="/map" element={<MapWithList />} />
+
 
           {/* 404 Route */}
           <Route

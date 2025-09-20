@@ -59,6 +59,8 @@ const Navbar = () => {
                     { name: 'Dashboard', path: '/admin/dashboard' }
                   ] : [
                     { name: 'Events', path: '/events' },
+                    { name: 'Maps', path: '/map' },
+
                     { name: 'Testimonials', onClick: scrollToTestimonials }
                   ])
                 ].map((item) => (

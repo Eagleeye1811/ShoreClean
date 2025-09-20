@@ -1,8 +1,9 @@
 import os
 from dotenv import load_dotenv
 
-load_dotenv()  # this will load from .env file
+load_dotenv()  # load variables from .env file
 
+# Third-party API keys
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 CLOUDINARY_CLOUD_NAME = os.getenv("CLOUDINARY_CLOUD_NAME")
 CLOUDINARY_API_KEY = os.getenv("CLOUDINARY_API_KEY")
@@ -11,3 +12,9 @@ STABILITY_API_KEY = os.getenv("STABILITY_API_KEY")
 EMAILJS_SERVICE_ID = os.getenv("EMAILJS_SERVICE_ID")
 EMAILJS_TEMPLATE_ID = os.getenv("EMAILJS_TEMPLATE_ID")
 EMAILJS_USER_ID = os.getenv("EMAILJS_USER_ID")
+
+# New: OpenAI API key for Vision analysis
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+
+# MongoDB connection
+MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
