@@ -1,7 +1,7 @@
 // server/src/index.js
-require('dotenv').config({ path: __dirname + '/.env' });
-const express = require('express');
-const cookieParser = require('cookie-parser');
+require("dotenv").config({ path: __dirname + "/.env" });
+const express = require("express");
+const cookieParser = require("cookie-parser");
 const http = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
@@ -16,16 +16,19 @@ const certificateRoutes = require("./routes/certificateRoutes");
 const registrationRoutes = require("./routes/registrationRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const groupRoutes = require("./routes/groupRoutes");
+const communityRoutes = require("./routes/communityRoutes");
 const webhookRoutes = require("./routes/webhookRoutes");
 const commentRoutes = require("./routes/commentRoutes.js");
 const markerRoutes = require("./routes/markerRoutes");
 
+const ratingRoutes = require("./routes/ratingRoutes.js");
+const organizationRoutes = require("./routes/organizationRoutes");
 
 const app = express();
 const server = http.createServer(app);
 
 // This must be before the express.json() middleware for Stripe webhooks
-app.use('/api/webhooks', webhookRoutes);
+app.use("/api/webhooks", webhookRoutes);
 
 // Initialize Socket.io with CORS settings
 const io = new Server(server, {
@@ -71,10 +74,13 @@ app.use("/api/donations", donationRoutes);
 app.use("/api/certificates", certificateRoutes);
 app.use("/api/registrations", registrationRoutes);
 app.use("/api/comments", commentRoutes);
+app.use("/api", ratingRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/groups", groupRoutes);
 app.use("/api/markers", markerRoutes);
 
+app.use("/api/organizations", organizationRoutes);
+app.use("/api/communities", communityRoutes);
 
 // Initialize Socket.io handlers for real-time chat
 initializeSocketHandlers(io);

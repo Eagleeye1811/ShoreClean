@@ -17,12 +17,17 @@ router.get('/', listEvents);
 router.get('/:id', getEvent);
 
 // Organizer/Admin Routes
-router.post('/', protect, authorize('organizer', 'admin'), createEvent);
-router.put('/:id', protect, authorize('organizer', 'admin'), updateEvent);
-router.delete('/:id', protect, authorize('organizer', 'admin'), deleteEvent); 
+router.post('/', protect, authorize('organizer', 'admin', 'org'), createEvent);
+router.put('/:id', protect, authorize('organizer', 'admin', 'org'), updateEvent);
+router.delete('/:id', protect, authorize('organizer', 'admin', 'org'), deleteEvent); 
 
 // Volunteer Routes
-router.post('/:id/rsvp', protect, authorize('volunteer', 'organizer', 'admin'), rsvpEvent);
-router.post('/:id/cancel-rsvp', protect, authorize('volunteer', 'organizer', 'admin'), cancelRsvp);
+router.post('/:id/rsvp', protect, authorize('volunteer', 'organizer', 'admin', 'org'), rsvpEvent);
+router.post('/:id/cancel-rsvp', protect, authorize('volunteer', 'organizer', 'admin', 'org'), cancelRsvp);
+
+// Ratings endpoint (placeholder for now)
+router.get('/:id/ratings', (req, res) => {
+  res.json({ userRating: 0, avgRating: 0 });
+});
 
 module.exports = router;
