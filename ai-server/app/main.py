@@ -7,7 +7,7 @@ print("GOOGLE_APPLICATION_CREDENTIALS =", os.getenv("GOOGLE_APPLICATION_CREDENTI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 
-from app.routes import cleanup_routes  # remove ai_routes since we no longer use OpenAI
+from app.routes import cleanup_routes, ai_routes  
 from app.db.mongo import connect_db, close_db
 
 app = FastAPI(title="AI Cleanup Server", version="1.0.0")
@@ -27,6 +27,7 @@ app.add_middleware(
 
 # Include cleanup routes only
 app.include_router(cleanup_routes.router, prefix="/cleanup", tags=["Cleanup"])
+app.include_router(ai_routes.router, prefix="/ai", tags=["AI"])
 
 # MongoDB connection events
 @app.on_event("startup")

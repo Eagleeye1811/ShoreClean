@@ -166,7 +166,7 @@ const CreateEvent = () => {
 
       // 3️⃣ Send Email via EmailJS
       const templateParams = {
-        to_email: "recipient@example.com", // replace with actual recipient
+        to_email: "vedgawali@gmail.com", // replace with actual recipient
         event_description: description,
         flyer_url: flyerUrl,
       };

@@ -73,7 +73,7 @@ const NotifyEvent = () => {
     setStatus("Sending email...");
     try {
       const templateParams = {
-        to_email: "vedgawali@gmail.com", // replace with real recipient
+        to_email: "vedgawali@gmail.com", 
         event_description: description,
         flyer_url: flyerUrl,
       };

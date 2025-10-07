@@ -15,30 +15,36 @@ function TrashMarkerList({
   updateRemark,
 }) {
   const [uploadingId, setUploadingId] = useState(null);
-  const [focusedRemarkId, setFocusedRemarkId] = useState(null);
+  const [focusedDescriptionId, setFocusedDescriptionId] = useState(null);
 
   function handleCompleteClick(id) {
     setUploadingId(id);
   }
 
-  function handleRemarkChange(id, remark) {
-    updateRemark(id, remark);
+  function handleDescriptionChange(id, description) {
+    // You'll need to add this function to update description
+    // updateDescription(id, description);
   }
 
-  function handleRemarkKeyPress(e, id) {
+  function handleDescriptionKeyPress(e, id) {
     if (e.key === "Enter") {
       e.preventDefault();
-      setFocusedRemarkId(null);
+      setFocusedDescriptionId(null);
       e.target.blur(); // Remove focus from the input
     }
   }
 
-  function handleRemarkFocus(id) {
-    setFocusedRemarkId(id);
+  function handleDescriptionFocus(id) {
+    setFocusedDescriptionId(id);
   }
 
-  function handleRemarkBlur() {
-    setFocusedRemarkId(null);
+  function handleDescriptionBlur() {
+    setFocusedDescriptionId(null);
+  }
+
+  function handleAnalyse(id) {
+    // Add your analysis logic here
+    console.log("Analysing marker:", id);
   }
 
   async function handleImageUpload(e, id) {
@@ -49,6 +55,24 @@ function TrashMarkerList({
     }
     await completeTask(id, file); // Only mark as completed after file upload
     setUploadingId(null); // Force re-render to update color
+  }
+
+  async function handleBeforeImageUpload(e, id) {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    // You'll need to implement this function to upload before image
+    // await uploadBeforeImage(id, file);
+    console.log("Uploading before image for marker:", id);
+  }
+
+  async function handleAfterImageUpload(e, id) {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    // You'll need to implement this function to upload after image
+    // await uploadAfterImage(id, file);
+    console.log("Uploading after image for marker:", id);
   }
 
   return (
@@ -81,7 +105,6 @@ function TrashMarkerList({
               <th style={thStyle}>Status</th>
               <th style={thStyle}>Action</th>
               <th style={thStyle}>Analysis</th>
-              <th style={thStyle}>Remark</th>
             </tr>
           </thead>
           <tbody>
@@ -101,29 +124,71 @@ function TrashMarkerList({
                 }}
               >
                 <td style={tdStyle}>{marker.address}</td>
-                <td style={tdStyle}>{marker.description || "-"}</td>
+                <td style={tdStyle}>
+                  <textarea
+                    placeholder="Add description..."
+                    value={marker.description || ""}
+                    onChange={(e) => handleDescriptionChange(marker._id, e.target.value)}
+                    onKeyPress={(e) => handleDescriptionKeyPress(e, marker._id)}
+                    onFocus={() => handleDescriptionFocus(marker._id)}
+                    onBlur={handleDescriptionBlur}
+                    style={{
+                      width: "100%",
+                      minHeight: "40px",
+                      maxHeight: "120px",
+                      boxSizing: "border-box",
+                      padding: "8px",
+                      borderRadius: "6px",
+                      border: "2px solid #e2e8f0",
+                      fontFamily: "inherit",
+                      fontSize: "14px",
+                      resize: "vertical",
+                      lineHeight: "1.4",
+                      transition: "border-color 0.2s ease",
+                      borderColor:
+                        focusedDescriptionId === marker._id ? "#4299e1" : "#e2e8f0",
+                    }}
+                    rows={2}
+                  />
+                </td>
                 <td style={tdStyle}>{marker.name || "-"}</td>
                 <td style={tdStyle}>
-                  {marker.before_img ? (
-                    <img
-                      src={marker.before_img}
-                      alt="Before"
-                      style={{ width: 50, borderRadius: "4px" }}
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                    {marker.before_img ? (
+                      <img
+                        src={marker.before_img}
+                        alt="Before"
+                        style={{ width: 50, borderRadius: "4px" }}
+                      />
+                    ) : (
+                      <span style={{ fontSize: '12px', color: '#666' }}>No image</span>
+                    )}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleBeforeImageUpload(e, marker._id)}
+                      style={imageUploadStyle}
                     />
-                  ) : (
-                    "-"
-                  )}
+                  </div>
                 </td>
                 <td style={tdStyle}>
-                  {marker.after_img ? (
-                    <img
-                      src={marker.after_img}
-                      alt="After"
-                      style={{ width: 50, borderRadius: "4px" }}
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+                    {marker.after_img ? (
+                      <img
+                        src={marker.after_img}
+                        alt="After"
+                        style={{ width: 50, borderRadius: "4px" }}
+                      />
+                    ) : (
+                      <span style={{ fontSize: '12px', color: '#666' }}>No image</span>
+                    )}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleAfterImageUpload(e, marker._id)}
+                      style={imageUploadStyle}
                     />
-                  ) : (
-                    "-"
-                  )}
+                  </div>
                 </td>
                 <td
                   style={{
@@ -166,33 +231,13 @@ function TrashMarkerList({
                     />
                   )}
                 </td>
-                <td style={tdStyle}>{marker.analysis || "-"}</td>
                 <td style={tdStyle}>
-                  <textarea
-                    placeholder="Add remark..."
-                    value={marker.remark || ""}
-                    onChange={(e) => handleRemarkChange(marker._id, e.target.value)}
-                    onKeyPress={(e) => handleRemarkKeyPress(e, marker._id)}
-                    onFocus={() => handleRemarkFocus(marker._id)}
-                    onBlur={handleRemarkBlur}
-                    style={{
-                      width: "100%",
-                      minHeight: "40px",
-                      maxHeight: "120px",
-                      boxSizing: "border-box",
-                      padding: "8px",
-                      borderRadius: "6px",
-                      border: "2px solid #e2e8f0",
-                      fontFamily: "inherit",
-                      fontSize: "14px",
-                      resize: "vertical",
-                      lineHeight: "1.4",
-                      transition: "border-color 0.2s ease",
-                      borderColor:
-                        focusedRemarkId === marker._id ? "#4299e1" : "#e2e8f0",
-                    }}
-                    rows={2}
-                  />
+                  <button 
+                    style={buttonStyleGreen} 
+                    onClick={() => handleAnalyse(marker._id)}
+                  >
+                    Analyse
+                  </button>
                 </td>
               </tr>
             ))}
@@ -237,6 +282,15 @@ const buttonStyleYellow = {
   marginRight: "8px",
 };
 
+const buttonStyleGreen = {
+  padding: "6px 12px",
+  borderRadius: "4px",
+  background: "#4caf50",
+  color: "#fff",
+  border: "none",
+  cursor: "pointer",
+};
+
 const fileInputStyle = {
   marginRight: "8px",
   padding: "8px",
@@ -246,6 +300,17 @@ const fileInputStyle = {
   backgroundColor: "#fff",
   cursor: "pointer",
   transition: "border-color 0.2s ease",
+};
+
+const imageUploadStyle = {
+  padding: "4px 8px",
+  border: "1px solid #ccc",
+  borderRadius: "4px",
+  fontSize: "10px",
+  backgroundColor: "#f9f9f9",
+  cursor: "pointer",
+  width: "80px",
+  textAlign: "center",
 };
 
 export default TrashMarkerList;

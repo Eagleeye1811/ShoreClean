@@ -67,6 +67,7 @@ export const getNavigationItems = (user) => {
   if (!user) {
     return [
       { name: "Events", path: "/events" },
+      { name: "Maps", path: "/map" },
       { name: "Testimonials", onClick: "scrollToTestimonials" },
     ];
   }
@@ -74,6 +75,7 @@ export const getNavigationItems = (user) => {
   if (isVolunteer(user)) {
     return [
       { name: "Events", path: "/events" },
+      { name: "Maps", path: "/map" },
       { name: "Testimonials", onClick: "scrollToTestimonials" },
       { name: "Donation", path: "/donations", isCtaButton: true },
     ];
@@ -82,6 +84,7 @@ export const getNavigationItems = (user) => {
   if (isOrganizer(user)) {
     return [
       { name: "Events", path: "/events" },
+      { name: "Maps", path: "/map" },
       { name: "Testimonials", onClick: "scrollToTestimonials" },
       { name: "Community Chat", path: "/chat", isCtaButton: true },
     ];
