@@ -1,13 +1,24 @@
+/**
+ * Authentication Context Provider
+ * Manages user authentication state and provides auth methods throughout the app
+ */
 import React, { createContext, useContext, useState, useEffect } from "react";
 import api from "../utils/api";
 import { isOrganizer } from "../utils/roleUtils";
 
 const AuthContext = createContext({});
 
+/**
+ * Custom hook to access authentication context
+ * @returns {Object} Authentication state and methods
+ */
 export const useAuth = () => {
   return useContext(AuthContext);
 };
 
+/**
+ * AuthProvider component that wraps the app and provides authentication state
+ */
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);

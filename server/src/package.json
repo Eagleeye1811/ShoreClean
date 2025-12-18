@@ -1,15 +1,16 @@
 {
-  "name": "src",
+  "name": "shore-clean-server",
   "version": "1.0.0",
+  "description": "ShoreClean backend API server with real-time features",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "test": "echo \"No tests configured yet\" && exit 0"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "keywords": ["cleanup", "environmental", "volunteer", "api"],
+  "author": "ShoreClean Team",
+  "license": "MIT",
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",

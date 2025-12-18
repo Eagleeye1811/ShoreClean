@@ -1,14 +1,19 @@
+/**
+ * API utility module for ShoreClean frontend
+ * Handles all HTTP requests to the backend server
+ */
 import axios from "axios";
 
-// Create axios instance
+// Create axios instance with base configuration
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || "http://localhost:8000/api",
   headers: {
     "Content-Type": "application/json",
   },
+  timeout: 30000, // 30 second timeout
 });
 
-// Request interceptor to add auth token
+// Request interceptor to add auth token to all requests
 api.interceptors.request.use(
   (config) => {
     const userData = localStorage.getItem("user");

@@ -10,16 +10,23 @@ from fastapi import FastAPI
 from app.routes import cleanup_routes, ai_routes  
 from app.db.mongo import connect_db, close_db
 
-app = FastAPI(title="AI Cleanup Server", version="1.0.0")
+app = FastAPI(
+    title="ShoreClean AI Server",
+    version="1.0.0",
+    description="AI-powered cleanup management and flyer generation service"
+)
 
-# Allow CORS for your frontend (React dev server)
+# Allow CORS for frontend applications
 origins = [
-    "http://localhost:5173",  # React dev server
+    "http://localhost:5173",  # React dev server (Vite)
+    "http://localhost:3000",  # Alternative React port
+    "http://localhost:5174",  # Additional Vite ports
+    "http://localhost:5175",
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,       # or ["*"] to allow all origins in dev
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

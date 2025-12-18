@@ -9,6 +9,10 @@ import {
   getProfilePath,
 } from "../utils/roleUtils";
 
+/**
+ * Main navigation component for ShoreClean
+ * Provides responsive navigation with role-based menu items
+ */
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
