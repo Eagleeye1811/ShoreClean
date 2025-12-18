@@ -59,6 +59,7 @@ tmp/
 # OS files
 Thumbs.db
 .DS_Store
+**/.DS_Store
 
 # API Keys and Credentials
 keys/

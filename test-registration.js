@@ -1,12 +1,22 @@
-// Test script for QR code registration system
+/**
+ * Test script for QR code registration system
+ * Tests the complete flow: user registration, login, event registration, and QR code generation
+ * 
+ * Usage: node test-registration.js
+ * Make sure the server is running on http://localhost:8000 before running this script
+ */
 const axios = require('axios');
 
 const BASE_URL = 'http://localhost:8000/api';
 
+/**
+ * Main test function for registration system
+ */
 async function testRegistrationSystem() {
   try {
     console.log('🧪 Testing Event Registration System with QR Codes');
     console.log('================================================');
+    console.log(`🔗 API Base URL: ${BASE_URL}\n`);
 
     // Step 1: Register a test user
     console.log('\n📝 Step 1: Creating test user...');
