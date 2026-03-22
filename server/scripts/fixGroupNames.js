@@ -6,7 +6,7 @@
  *   node scripts/fixGroupNames.js
  */
 
-require("dotenv").config({ path: __dirname + "/../.env" });
+require("dotenv").config({ path: __dirname + "/../src/.env" });
 const mongoose = require("mongoose");
 const Group = require("../src/models/Group");
 const User = require("../src/models/User");

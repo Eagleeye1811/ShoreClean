@@ -83,11 +83,6 @@ const TestimonialsSection = () => {
           viewport={{ once: true }}
           className="flex flex-col items-center justify-center max-w-[560px] mx-auto mb-12"
         >
-          <div className="flex justify-center mb-4">
-            <div className="border border-cyan-200 bg-cyan-50 text-cyan-700 py-1 px-4 rounded-full text-sm font-medium">
-              Testimonials
-            </div>
-          </div>
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-gray-800 text-center">
             What Our{" "}

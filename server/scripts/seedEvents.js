@@ -11,7 +11,7 @@
  *  4. Auto-create an event-specific chat group for each event
  */
 
-require("dotenv").config({ path: __dirname + "/../.env" });
+require("dotenv").config({ path: __dirname + "/../src/.env" });
 const mongoose = require("mongoose");
 const Event = require("../src/models/Event");
 const Group = require("../src/models/Group");
