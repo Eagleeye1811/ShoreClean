@@ -50,10 +50,7 @@ const io = new Server(server, {
 // Initialize database connection
 connectDB();
 
-app.use(express.json());
-app.use(cookieParser());
-
-// CORS: allow client to send cookies to server
+// CORS must come before express.json() so preflight OPTIONS requests are handled correctly
 app.use(
   cors({
     origin: [
@@ -66,6 +63,11 @@ app.use(
     credentials: true,
   })
 );
+
+// Increase JSON body limit to 10mb to support base64-encoded images
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ limit: "10mb", extended: true }));
+app.use(cookieParser());
 
 // Mount routes
 app.use("/api/auth", authRoutes);

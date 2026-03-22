@@ -32,8 +32,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include cleanup routes only
-app.include_router(cleanup_routes.router, prefix="/cleanup", tags=["Cleanup"])
+# Include routes (cleanup_routes already has prefix="/cleanup" defined in the router)
+app.include_router(cleanup_routes.router)
 app.include_router(ai_routes.router, prefix="/ai", tags=["AI"])
 
 # MongoDB connection events

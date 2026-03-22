@@ -24,3 +24,6 @@ cloudinary==1.41.0
 
 # Utils
 annotated-types==0.7.0
+
+# Google Gemini
+google-generativeai

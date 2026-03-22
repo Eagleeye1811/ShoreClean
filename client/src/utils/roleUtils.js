@@ -66,27 +66,29 @@ export const getUserRoleDisplayName = (user) => {
 export const getNavigationItems = (user) => {
   if (!user) {
     return [
+      { name: "Home", path: "/" },
       { name: "Events", path: "/events" },
-      { name: "Maps", path: "/map" },
-      { name: "Testimonials", onClick: "scrollToTestimonials" },
+      { name: "Map", path: "/map" },
     ];
   }
 
   if (isVolunteer(user)) {
     return [
+      { name: "Home", path: "/" },
       { name: "Events", path: "/events" },
-      { name: "Maps", path: "/map" },
-      { name: "Testimonials", onClick: "scrollToTestimonials" },
-      { name: "Donation", path: "/donations", isCtaButton: true },
+      { name: "Map", path: "/map" },
+      { name: "Community Chat", path: "/chat" },
+      { name: "Donations", path: "/donations" },
     ];
   }
 
   if (isOrganizer(user)) {
     return [
+      { name: "Home", path: "/" },
       { name: "Events", path: "/events" },
-      { name: "Maps", path: "/map" },
-      { name: "Testimonials", onClick: "scrollToTestimonials" },
-      { name: "Community Chat", path: "/chat", isCtaButton: true },
+      { name: "Map", path: "/map" },
+      { name: "Community Chat", path: "/chat" },
+      { name: "Donations", path: "/donations" },
     ];
   }
 
