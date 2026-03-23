@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import emailjs from "@emailjs/browser";
-import api, { API_ROOT, aiApiUrl } from "../../utils/api";
+import api, { aiApiUrl } from "../../utils/api";
 
 const initialState = {
   title: "",
@@ -95,7 +95,7 @@ const CreateEvent = () => {
         await api.put(`/events/${eventId}`, eventData);
       } else {
         await api.post("/events", eventData);
-        await notifyUsers(eventData.title);
+        notifyUsers(eventData.title); // fire-and-forget — don't block navigation
       }
 
       navigate("/events");
@@ -110,60 +110,48 @@ const CreateEvent = () => {
     }
   };
 
-  // Function to generate description & flyer, then send email
+  // Generate AI description + flyer, then email the notification to the admin address
   const notifyUsers = async (eventQuery) => {
     try {
-      // 1️⃣ Generate description
-      const descRes = await fetch(aiApiUrl("/ai/description"), {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ event_query: eventQuery }),
-      });
+      const [descRes, flyerRes] = await Promise.all([
+        fetch(aiApiUrl("/ai/description"), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ event_query: eventQuery }),
+        }),
+        fetch(aiApiUrl("/ai/flyer"), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ event_query: eventQuery }),
+        }),
+      ]);
+
+      if (!descRes.ok) throw new Error(`Description API error: ${descRes.status}`);
+      if (!flyerRes.ok) throw new Error(`Flyer API error: ${flyerRes.status}`);
+
       const descData = await descRes.json();
-      const description = descData.description;
-
-      // 2️⃣ Generate flyer
-      const flyerRes = await fetch(aiApiUrl("/ai/flyer"), {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ event_query: eventQuery }),
-      });
       const flyerData = await flyerRes.json();
-      const flyerUrl = flyerData.flyer_url || flyerData.image_path;
 
-      // 3️⃣ Send Email via EmailJS to all registered volunteers
-      let volunteerEmails = [];
-      try {
-        const token = localStorage.getItem("token");
-        const volRes = await fetch(`${API_ROOT}/volunteers`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (volRes.ok) {
-          const volData = await volRes.json();
-          volunteerEmails = (volData || []).map((v) => v.email).filter(Boolean);
-        }
-      } catch (_) {}
+      const description = descData.description || "";
+      const flyerUrl = flyerData.flyer_url || flyerData.image_path || "";
+      const toEmail = import.meta.env.VITE_ADMIN_EMAIL || "vedgawali@gmail.com";
 
-      const recipients = volunteerEmails.length > 0 ? volunteerEmails : [import.meta.env.VITE_ADMIN_EMAIL || "admin@shoreclean.org"];
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        {
+          to_email: toEmail,
+          title: eventQuery,
+          name: "ShoreClean",
+          event_description: description,
+          flyer_url: flyerUrl,
+        },
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      );
 
-      for (const email of recipients.slice(0, 10)) {
-        try {
-          await emailjs.send(
-            import.meta.env.VITE_EMAILJS_SERVICE_ID,
-            import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-            {
-              to_email: email,
-              event_description: description,
-              flyer_url: flyerUrl,
-            },
-            import.meta.env.VITE_EMAILJS_PUBLIC_KEY
-          );
-        } catch (_) {}
-      }
-
-      console.log("Notification email sent successfully ✅");
+      console.log("Notification email sent to", toEmail, "✅");
     } catch (err) {
-      console.error("Failed to notify users ❌", err);
+      console.error("Failed to send notification email ❌", err);
     }
   };
 

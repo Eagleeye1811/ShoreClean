@@ -1,9 +1,8 @@
 import os
 import logging
+import asyncio
 import requests
 import base64
-from PIL import Image
-from io import BytesIO
 import datetime
 import cloudinary
 import cloudinary.uploader
@@ -23,12 +22,11 @@ if not STABILITY_API_KEY:
 
 logging.basicConfig(level=logging.INFO)
 
-async def generate_flyer(prompt: str) -> dict:
+def _call_stability(prompt: str) -> requests.Response:
     headers = {
         "Authorization": f"Bearer {STABILITY_API_KEY}",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
     }
-
     payload = {
         "cfg_scale": 10,
         "clip_guidance_preset": "FAST_BLUE",
@@ -36,11 +34,14 @@ async def generate_flyer(prompt: str) -> dict:
         "width": 1024,
         "samples": 1,
         "steps": 30,
-        "text_prompts": [{"text": prompt, "weight": 1}]
+        "text_prompts": [{"text": prompt, "weight": 1}],
     }
+    return requests.post(STABILITY_API_URL, headers=headers, json=payload)
 
+
+async def generate_flyer(prompt: str) -> dict:
     try:
-        response = requests.post(STABILITY_API_URL, headers=headers, json=payload)
+        response = await asyncio.to_thread(_call_stability, prompt)
         if response.status_code != 200:
             raise Exception(f"Stability API Error: {response.text}")
 
@@ -55,8 +56,10 @@ async def generate_flyer(prompt: str) -> dict:
 
         logging.info(f"Flyer saved at {image_path}")
 
-        # Upload to Cloudinary
-        upload_result = cloudinary.uploader.upload(image_path, folder="event_flyers")
+        # Upload to Cloudinary (run in thread pool — sync SDK)
+        upload_result = await asyncio.to_thread(
+            cloudinary.uploader.upload, image_path, folder="event_flyers"
+        )
         flyer_url = upload_result.get("secure_url")
 
         logging.info(f"Flyer uploaded to Cloudinary: {flyer_url}")

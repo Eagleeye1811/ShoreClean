@@ -156,7 +156,7 @@ const Navbar = () => {
                         if (item.onClick === "scrollToTestimonials")
                           scrollToTestimonials();
                       }}
-                      className="px-4 py-2 rounded-xl text-[0.9rem] text-gray-700 hover:text-cyan-600 hover:bg-cyan-50 transition-all duration-300 font-medium relative group whitespace-nowrap"
+                      className="px-3 py-2 rounded-xl text-[0.85rem] text-gray-700 hover:text-cyan-600 hover:bg-cyan-50 transition-all duration-300 font-medium relative group whitespace-nowrap"
                     >
                       {item.name}
                       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-cyan-500 group-hover:w-3/4 transition-all duration-300" />
@@ -165,7 +165,7 @@ const Navbar = () => {
                     <Link
                       key={item.name}
                       to={item.path}
-                      className={`px-4 py-2 rounded-xl text-[0.9rem] font-medium relative group whitespace-nowrap transition-all duration-300 ${
+                      className={`px-3 py-2 rounded-xl text-[0.85rem] font-medium relative group whitespace-nowrap transition-all duration-300 ${
                         isActive
                           ? "text-cyan-600 bg-cyan-50"
                           : "text-gray-700 hover:text-cyan-600 hover:bg-cyan-50"

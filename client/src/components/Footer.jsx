@@ -16,6 +16,7 @@ export default function Footer() {
     { name: 'Home', path: '/' },
     { name: 'Events', path: '/events' },
     { name: 'Map', path: '/map' },
+    { name: 'Certificates', path: '/volunteer/certificates' },
     { name: 'Community Chat', path: '/chat' },
     { name: 'Donations', path: '/donations' },
   ];

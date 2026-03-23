@@ -78,6 +78,7 @@ export const getNavigationItems = (user) => {
       { name: "Events", path: "/events" },
       { name: "Maps", path: "/map" },
       { name: "My Events", path: "/volunteer/my-events" },
+      { name: "Certificates", path: "/volunteer/certificates" },
       { name: "Community Chat", path: "/chat" },
       { name: "Donate", path: "/donations" },
     ];
@@ -89,6 +90,7 @@ export const getNavigationItems = (user) => {
       { name: "Events", path: "/events" },
       { name: "Maps", path: "/map" },
       { name: "My Events", path: `/events?organizer=${user._id}` },
+      { name: "Certificates", path: "/certificates" },
       { name: "Community Chat", path: "/chat" },
       { name: "Donations", path: "/donations" },
     ];
