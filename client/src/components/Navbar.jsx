@@ -241,14 +241,14 @@ const Navbar = () => {
 
                     {userIsVolunteer && (
                       <>
-                        <Link
+                        {/* <Link
                           to="/volunteer/my-events"
                           className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-cyan-50 hover:text-cyan-600 transition-colors"
                           onClick={() => setShowUserMenu(false)}
                         >
                           <Calendar className="h-4 w-4 shrink-0" />
                           My Events
-                        </Link>
+                        </Link> */}
                         <Link
                           to="/volunteer/certificates"
                           className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-cyan-50 hover:text-cyan-600 transition-colors"
@@ -421,7 +421,7 @@ const Navbar = () => {
                 <>
                   {[
                     { name: "Home", path: "/" },
-                    { name: "Events", path: "/events" },
+                    { name: "My Events", path: "/events" },
                     { name: "Map", path: "/map" },
                     { name: "About", path: "/about" },
                   ].map((item) => (

@@ -1,6 +1,6 @@
 // server/src/index.js
 // ShoreClean Backend Server - Main Entry Point
-require("dotenv").config({ path: __dirname + "/.env" });
+require("dotenv").config({ path: require('path').join(__dirname, "../.env") });
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const http = require("http");
@@ -66,13 +66,6 @@ const io = new Server(server, {
 // Initialize database connection
 connectDB();
 
-app.use(express.json());
-app.use(cookieParser());
-
-// Rate limiting
-const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 20, message: { message: "Too many requests, please try again later" } });
-const donationLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 10, message: { message: "Too many donation requests, please try again later" } });
-
 // CORS: localhost (any port) + CLIENT_URL — avoids dev port mismatches
 app.use(
   cors({
@@ -89,6 +82,10 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
 app.use(cookieParser());
 
+// Rate limiting
+const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 20, message: { message: "Too many requests, please try again later" } });
+const donationLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 10, message: { message: "Too many donation requests, please try again later" } });
+
 // Mount routes
 app.use("/api/auth", authLimiter, authRoutes);
 app.use("/api/events", eventRoutes);
@@ -97,10 +94,10 @@ app.use("/api/donations", donationLimiter, donationRoutes);
 app.use("/api/certificates", certificateRoutes);
 app.use("/api/registrations", registrationRoutes);
 app.use("/api/comments", commentRoutes);
+app.use("/api/markers", markerRoutes);
 app.use("/api", ratingRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/groups", groupRoutes);
-app.use("/api/markers", markerRoutes);
 
 app.use("/api/organizations", organizationRoutes);
 app.use("/api/communities", communityRoutes);
