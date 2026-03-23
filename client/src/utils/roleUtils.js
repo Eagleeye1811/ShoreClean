@@ -87,9 +87,9 @@ export const getNavigationItems = (user) => {
   if (isOrganizer(user)) {
     return [
       { name: "Home", path: "/" },
-      { name: "Events", path: "/events" },
+      { name: "My Events", path: "/events" },
       { name: "Maps", path: "/map" },
-      { name: "My Events", path: `/events?organizer=${user._id}` },
+      //{ name: "My Events", path: `/events?organizer=${user._id}` },
       { name: "Certificates", path: "/certificates" },
       { name: "Community Chat", path: "/chat" },
       { name: "Donations", path: "/donations" },

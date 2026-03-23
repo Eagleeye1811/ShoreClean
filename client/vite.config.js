@@ -14,12 +14,12 @@ export default defineConfig({
       },
       // FastAPI AI server (default port 8001) — avoids cross-origin from the browser
       "/ai": {
-        target: process.env.VITE_AI_PROXY_TARGET || "http://localhost:8001",
+        target: process.env.VITE_AI_PROXY_TARGET || "http://localhost:8000",
         changeOrigin: true,
         secure: false,
       },
       "/cleanup": {
-        target: process.env.VITE_AI_PROXY_TARGET || "http://localhost:8001",
+        target: process.env.VITE_AI_PROXY_TARGET || "http://localhost:8000",
         changeOrigin: true,
         secure: false,
       },
